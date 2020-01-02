@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -eu
 
-regex='((https?|ftp|file|git)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|])'
+regex="((https?|ftp|file|git)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|])"
 BUFFER_NAME=temp-buffer
 # capture buffer
 tmux capture-pane -b $BUFFER_NAME 
@@ -12,10 +12,8 @@ content=`tmux show-buffer -b $BUFFER_NAME`
 # delete buffer
 tmux delete-buffer -b $BUFFER_NAME
 
-parts=$(echo $content | tr ' ' '\n')
-
 output=""
-for match in $parts; do
+for match in $content; do
     [[ $match =~ $regex ]]
     url=${BASH_REMATCH[1]-""}
     if [[ -n $url ]]; then
